@@ -2,15 +2,8 @@
 import { ref, onMounted, computed, watch, onBeforeMount } from 'vue'
 import Greetings from '@/components/GreetingsView.vue'
 import AddNewForm from '@/components/AddNewForm.vue'
-
-interface Todo {
-  content: string;
-  category: string;
-  done: boolean;
-  editable: boolean;
-  createdAt: Date;
-}
-
+import type { Todo } from '@/types/types'
+import ShowList from '@/components/ShowList.vue'
 const todos = ref<Todo[]>([]);
 const name = ref('')
 
@@ -56,22 +49,7 @@ onBeforeMount(() => {
     <section class="todo-list">
       <h3>TODO LIST</h3>
       <div class="list" id="todo-list">
-        <div v-for="todo in todos_asc" :class="`todo-item ${todo.done && 'done'}`">
-          <label>
-            <input type="checkbox" v-model="todo.done" />
-            <span
-              :class="`bubble ${todo.category === 'business' ? 'business' : 'personal'}`"
-            ></span>
-          </label>
-
-          <div class="todo-content">
-            <input type="text" v-model="todo.content" />
-          </div>
-
-          <div class="actions">
-            <button class="delete" @click="removeTodo(todo)">Delete</button>
-          </div>
-        </div>
+      <ShowList :todos="todos" @removeTodo="removeTodo"></ShowList>
       </div>
     </section>
   </main>
