@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, onBeforeMount } from 'vue'
 import Greetings from '@/components/GreetingsView.vue'
+import AddNewForm from '@/components/AddNewForm.vue'
 
-const todos = ref([])
+interface Todo {
+  content: string;
+  category: string;
+  done: boolean;
+  editable: boolean;
+  createdAt: Date;
+}
+
+const todos = ref<Todo[]>([]);
 const name = ref('')
 
 const input_content = ref('')
@@ -24,18 +33,8 @@ watch(
   }
 )
 
-const addTodo = () => {
-  if (input_content.value.trim() === '' || input_category.value === null) {
-    return
-  }
-
-  todos.value.push({
-    content: input_content.value,
-    category: input_category.value,
-    done: false,
-    editable: false,
-    createdAt: new Date().getTime()
-  })
+const addTodo = (data : Todo) => {
+  todos.value.push(data)
 }
 
 const removeTodo = (todo) => {
@@ -52,48 +51,7 @@ onBeforeMount(() => {
   <main class="app">
     <Greetings :name="name" />
 
-    <section class="create-todo">
-      <h3>CREATE A TODO</h3>
-      <form id="new-todo-form" @submit.prevent="addTodo">
-        <h4>What's on your todo list?</h4>
-        <input
-          type="text"
-          name="content"
-          id="content"
-          placeholder="e.g. make a video"
-          v-model="input_content"
-        />
-
-        <h4>Pick a category</h4>
-        <div class="options">
-          <label>
-            <input
-              type="radio"
-              name="category"
-              id="category1"
-              value="business"
-              v-model="input_category"
-            />
-            <span class="bubble business"></span>
-            <div>Business</div>
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="category"
-              id="category2"
-              value="personal"
-              v-model="input_category"
-            />
-            <span class="bubble personal"></span>
-            <div>Personal</div>
-          </label>
-        </div>
-
-        <input type="submit" value="Add todo" />
-      </form>
-    </section>
+    <AddNewForm @addTodo="addTodo"></AddNewForm>
 
     <section class="todo-list">
       <h3>TODO LIST</h3>
