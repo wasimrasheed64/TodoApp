@@ -25,7 +25,7 @@ watch(
     </label>
 
     <div class="todo-content">
-      <input type="text" v-model="todo.content" />
+      <input type="text" :key="index + 'todoList'" v-model="todo.content" />
     </div>
 
     <div class="actions">

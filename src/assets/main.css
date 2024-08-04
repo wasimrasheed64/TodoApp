@@ -198,6 +198,7 @@ input:checked ~ .bubble::after {
 
 .todo-item .todo-content input {
   color: var(--dark);
+  width: 80%;
   font-size: 1.125rem;
 }
 
