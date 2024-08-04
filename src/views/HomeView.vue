@@ -6,16 +6,6 @@ import type { Todo } from '@/types/types'
 import ShowList from '@/components/ShowList.vue'
 const todos = ref<Todo[]>([]);
 const name = ref('')
-
-const input_content = ref('')
-const input_category = ref(null)
-
-const todos_asc = computed(() =>
-  todos.value.sort((a, b) => {
-    return a.createdAt - b.createdAt
-  })
-)
-
 watch(
   todos,
   (newVal) => {
@@ -30,7 +20,7 @@ const addTodo = (data : Todo) => {
   todos.value.push(data)
 }
 
-const removeTodo = (todo) => {
+const removeTodo = (todo:Todo ) => {
   todos.value = todos.value.filter((t) => t !== todo)
 }
 

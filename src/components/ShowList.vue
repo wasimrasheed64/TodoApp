@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Todo } from '@/types/types'
 const props = defineProps<{
   todos: Todo[];
@@ -10,7 +10,12 @@ const removeTodo  = (todo: Todo) => {
   emit('removeTodo', todo);
 };
 
-
+watch(
+  () => props.todos,
+  (newVal) => {
+    todos_asc.value = newVal;
+  },
+);
 </script>
 <template>
   <div v-for="(todo, index) in todos_asc" :key="index" :class="`todo-item d${todo.done && 'done'}`">
