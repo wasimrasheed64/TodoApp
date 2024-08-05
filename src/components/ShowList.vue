@@ -1,31 +1,30 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import type { Todo } from '@/types/types'
-const props = defineProps<{
-  todos: Todo[];
-}>();
-const emit = defineEmits(['removeTodo']);
-const todos_asc = ref(props.todos);
-const removeTodo  = (todo: Todo) => {
-  emit('removeTodo', todo);
-};
+import { ref, watch } from 'vue';
+import { todoStore } from '@/stores/todo';
+import type { Todo } from '@/types/types';
 
-watch(
-  () => props.todos,
-  (newVal) => {
-    todos_asc.value = newVal;
-  },
-);
+const store = todoStore();
+const todos = ref<Todo[]>(store.getAll());
+
+watch(store.todos, (newTodos) => {
+  todos.value = newTodos;
+});
+
+function removeTodo(todo: Todo) {
+  store.remove(todo);
+  todos.value = store.getAll();
+}
+
 </script>
 <template>
-  <div v-for="(todo, index) in todos_asc" :key="index" :class="`todo-item d${todo.done && 'done'}`">
+  <div v-for="(todo, index) in todos" :key="index" :class="`todo-item d${todo.done && 'done'}`">
     <label>
       <input type="checkbox" v-model="todo.done" />
       <span :class="`bubble ${todo.category === 'business' ? 'business' : 'personal'}`"></span>
     </label>
 
     <div class="todo-content">
-      <input type="text" :key="index + 'todoList'" v-model="todo.content" />
+      <input :disabled="todo.done" :class="todo.done ? 'class-decoration' : ''" type="text" :key="index + 'todoList'" v-model="todo.content" />
     </div>
 
     <div class="actions">

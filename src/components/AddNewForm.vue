@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-const emit = defineEmits(['addTodo']);
+import { todoStore } from '@/stores/todo'
+const store = todoStore();
 const input_content = ref('')
 const input_category = ref(null)
 const addTodo = () => {
   if (input_content.value.trim() === '' || input_category.value === null) {
     return
   }
-  emit('addTodo', {
+  store.add({
     content: input_content.value,
     category: input_category.value,
     done: false,

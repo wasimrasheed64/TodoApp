@@ -233,3 +233,6 @@ input:checked ~ .bubble::after {
   text-decoration: line-through;
   color: var(--grey);
 }
+.class-decoration{
+  text-decoration: line-through;
+}
