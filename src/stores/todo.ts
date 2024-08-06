@@ -1,13 +1,18 @@
 import { defineStore } from 'pinia';
 import type { Todo } from '@/types/types';
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 export const todoStore = defineStore('todo', () => {
-  const todos = ref<Todo[]>(JSON.parse(localStorage.getItem('todos') || '[]'));
-
-  function updateTodos(todos: Todo[] ) {
+  const todos = ref<Todo[]>([]);
+  onMounted(() => {
+    const storedTodos = localStorage.getItem('todos');
+    if (storedTodos) {
+      todos.value = JSON.parse(storedTodos);
+    }
+  });
+  watch(todos, (todos) => {
     localStorage.setItem('todos', JSON.stringify(todos));
-  }
+  }, { deep: true });
 
   function getAll() {
     return todos.value;
@@ -15,12 +20,10 @@ export const todoStore = defineStore('todo', () => {
 
   function add(data:Todo) {
     todos.value.push(data);
-    updateTodos(todos.value);
   }
 
   function remove(todo: Todo) {
     todos.value = todos.value.filter((t) => t !== todo);
-    updateTodos(todos.value);
   }
 
   return {

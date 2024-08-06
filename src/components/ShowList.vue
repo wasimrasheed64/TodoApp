@@ -2,19 +2,15 @@
 import { ref, watch } from 'vue';
 import { todoStore } from '@/stores/todo';
 import type { Todo } from '@/types/types';
-
 const store = todoStore();
-const todos = ref<Todo[]>(store.getAll());
+const todos =  ref<Todo[]>();
 
-watch(store.todos, (newTodos) => {
-  todos.value = newTodos;
-});
 
 function removeTodo(todo: Todo) {
   store.remove(todo);
   todos.value = store.getAll();
 }
-
+todos.value = store.getAll();
 </script>
 <template>
   <div v-for="(todo, index) in todos" :key="index" :class="`todo-item d${todo.done && 'done'}`">
