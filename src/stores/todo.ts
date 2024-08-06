@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import type { Todo } from '@/types/types';
-import { onMounted, ref, watch } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 
 export const todoStore = defineStore('todo', () => {
   const todos = ref<Todo[]>([]);
-  onMounted(() => {
+  onBeforeMount(() => {
     const storedTodos = localStorage.getItem('todos');
     if (storedTodos) {
       todos.value = JSON.parse(storedTodos);
