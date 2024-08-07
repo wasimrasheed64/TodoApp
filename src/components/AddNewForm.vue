@@ -13,7 +13,7 @@ const addTodo = () => {
     category: input_category.value,
     done: false,
     editable: false,
-    createdAt: new Date().getTime()
+    createdAt: new Date(),
   });
   input_content.value = ''
   input_category.value = null
